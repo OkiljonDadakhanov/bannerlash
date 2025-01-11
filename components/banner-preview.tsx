@@ -26,9 +26,9 @@ export function BannerPreview({ data }: BannerPreviewProps) {
         <p className="text-xl text-gray-300">{data.title || "Your Title"}</p>
       </div>
       {/* Updated Layout */}
-      <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start">
+      <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start sm:mt-4">
         {/* Social Media Links */}
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 mt-4 sm:mt-0">
           {data.twitter && (
             <div className="flex items-center gap-2 text-gray-300">
               <Twitter className="h-5 w-5" />
@@ -48,6 +48,7 @@ export function BannerPreview({ data }: BannerPreviewProps) {
             </div>
           )}
         </div>
+
         {/* Tech Stack Icons */}
         {data.stack.length > 0 && (
           <div className="flex flex-wrap gap-3 sm:mt-0 mt-4">
