@@ -40,7 +40,29 @@ export function BannerEditor() {
 
     try {
       const { toPng } = await import("html-to-image");
-      const dataUrl = await toPng(banner);
+      const dataUrl = await toPng(banner, {
+        cacheBust: true, // Prevents caching issues
+        width: banner.offsetWidth, // Ensure proper dimensions
+        height: banner.offsetHeight,
+      });
+
+      // For mobile: open the image in a new tab as a fallback
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        const newTab = window.open();
+        if (newTab) {
+          newTab.document.body.style.margin = "0";
+          const img = newTab.document.createElement("img");
+          img.src = dataUrl;
+          img.style.width = "100%";
+          img.style.height = "auto";
+          newTab.document.body.appendChild(img);
+        } else {
+          console.warn("Popup blocked. Unable to open image in a new tab.");
+        }
+        return;
+      }
+
+      // For desktop: download the image
       const link = document.createElement("a");
       link.download = "banneringiz.png";
       link.href = dataUrl;
