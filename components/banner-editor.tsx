@@ -39,34 +39,34 @@ export function BannerEditor() {
     if (!banner) return;
 
     try {
-      const { toPng } = await import("html-to-image");
-      const dataUrl = await toPng(banner, {
+      const { toBlob } = await import("html-to-image");
+
+      // Convert the banner to a Blob
+      const blob = await toBlob(banner, {
         cacheBust: true, // Prevents caching issues
-        width: banner.offsetWidth, // Ensure proper dimensions
-        height: banner.offsetHeight,
+        width: banner.offsetWidth, // Proper width
+        height: banner.offsetHeight, // Proper height
       });
 
-      // For mobile: open the image in a new tab as a fallback
-      if (/Mobi|Android/i.test(navigator.userAgent)) {
-        const newTab = window.open();
-        if (newTab) {
-          newTab.document.body.style.margin = "0";
-          const img = newTab.document.createElement("img");
-          img.src = dataUrl;
-          img.style.width = "100%";
-          img.style.height = "auto";
-          newTab.document.body.appendChild(img);
-        } else {
-          console.warn("Popup blocked. Unable to open image in a new tab.");
-        }
+      if (!blob) {
+        console.error("Failed to generate the image as a blob");
         return;
       }
 
-      // For desktop: download the image
+      // Create a temporary link to download the file
       const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+
+      link.href = url;
       link.download = "banneringiz.png";
-      link.href = dataUrl;
-      link.click();
+      link.style.display = "none"; // Keep it hidden
+      document.body.appendChild(link);
+
+      link.click(); // Trigger download
+
+      // Clean up the URL object and link
+      URL.revokeObjectURL(url);
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error generating banner:", error);
     }
