@@ -25,7 +25,8 @@ export function BannerPreview({ data }: BannerPreviewProps) {
         </h2>
         <p className="text-xl text-gray-300">{data.title || "Your Title"}</p>
       </div>
-      <div className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-between items-start">
+      {/* Updated Layout */}
+      <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start">
         {/* Social Media Links */}
         <div className="flex flex-wrap gap-4">
           {data.twitter && (
@@ -49,7 +50,7 @@ export function BannerPreview({ data }: BannerPreviewProps) {
         </div>
         {/* Tech Stack Icons */}
         {data.stack.length > 0 && (
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 sm:mt-0 mt-4">
             {data.stack.map((tech) => (
               <Image
                 key={tech.name}
