@@ -144,6 +144,26 @@ export const technologies: Technology[] = [
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/solidity/solidity-original.svg",
     size: 32,
   },
+  {
+    name: "Angular",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angular/angular-original.svg",
+    size: 32,
+  },
+  {
+    name: "Vue",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vue/vue-original.svg",
+    size: 32,
+  },
+  {
+    name: ".NET",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg",
+    size: 32,
+  },
+  {
+    name: "Go",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg",
+    size: 32,
+  },
 ];
 
 interface TechStackProps {
