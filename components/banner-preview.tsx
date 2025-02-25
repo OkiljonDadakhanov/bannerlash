@@ -41,14 +41,10 @@ export function BannerPreview({ data }: BannerPreviewProps) {
         )}
       </div>
 
-      {/* Center Section: Display Motto or Default Text */}
+      {/* Center Section: Display Motto or Simple Placeholder */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
         <p className="text-gray-400 text-lg italic">
-          {data.motto
-            ? `"${data.motto}"`
-            : data.name
-            ? `"${data.title || "Professional"} at work"`
-            : "Your tagline here"}
+          {data.motto ? `"${data.motto}"` : "Your tagline here"}
         </p>
       </div>
 
@@ -67,7 +63,6 @@ export function BannerPreview({ data }: BannerPreviewProps) {
               <span>{data.github}</span>
             </div>
           )}
-       
         </div>
 
         {data.stack.length > 0 && (
