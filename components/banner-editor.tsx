@@ -13,8 +13,9 @@ interface BannerData {
   title: string;
   twitter: string;
   github: string;
-  linkedin: string;
   stack: Technology[];
+  image?: string;
+  motto?: string; // Added motto field
 }
 
 export function BannerEditor() {
@@ -23,8 +24,9 @@ export function BannerEditor() {
     title: "",
     twitter: "",
     github: "",
-    linkedin: "",
     stack: [],
+    image: undefined,
+    motto: "", // Initialize motto
   });
 
   const updateBannerData = (
@@ -34,6 +36,18 @@ export function BannerEditor() {
     setBannerData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Handle image upload
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateBannerData("image", reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleDownload = async () => {
     const banner = document.getElementById("banner");
     if (!banner) return;
@@ -41,11 +55,10 @@ export function BannerEditor() {
     try {
       const { toBlob } = await import("html-to-image");
 
-      // Convert the banner to a Blob
       const blob = await toBlob(banner, {
-        cacheBust: true, // Prevents caching issues
-        width: banner.offsetWidth, // Proper width
-        height: banner.offsetHeight, // Proper height
+        cacheBust: true,
+        width: banner.offsetWidth,
+        height: banner.offsetHeight,
       });
 
       if (!blob) {
@@ -53,18 +66,16 @@ export function BannerEditor() {
         return;
       }
 
-      // Create a temporary link to download the file
       const link = document.createElement("a");
       const url = URL.createObjectURL(blob);
 
       link.href = url;
       link.download = "banneringiz.png";
-      link.style.display = "none"; // Keep it hidden
+      link.style.display = "none";
       document.body.appendChild(link);
 
-      link.click(); // Trigger download
+      link.click();
 
-      // Clean up the URL object and link
       URL.revokeObjectURL(url);
       document.body.removeChild(link);
     } catch (error) {
@@ -101,11 +112,12 @@ export function BannerEditor() {
             placeholder: "username",
             value: bannerData.github,
           },
+         
           {
-            label: "LinkedIn",
-            id: "linkedin",
-            placeholder: "username",
-            value: bannerData.linkedin,
+            label: "Favorite Motto/Quote",
+            id: "motto",
+            placeholder: "Enter your favorite motto or quote",
+            value: bannerData.motto || "",
           },
         ].map(({ label, id, placeholder, value }) => (
           <div className="space-y-2" key={id}>
@@ -117,9 +129,21 @@ export function BannerEditor() {
               onChange={(e) =>
                 updateBannerData(id as keyof BannerData, e.target.value)
               }
+              className="text-gray-900 bg-white border-gray-300"
             />
           </div>
         ))}
+        {/* Image Upload Input */}
+        <div className="space-y-2">
+          <Label htmlFor="image">Profile Image</Label>
+          <Input
+            id="image"
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="text-gray-900 bg-white border-gray-300"
+          />
+        </div>
         <TechStack
           selected={bannerData.stack}
           onChange={(stack) => updateBannerData("stack", stack)}
