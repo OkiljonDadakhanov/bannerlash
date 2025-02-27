@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { BannerPreview } from "./banner-preview";
 import { TechStack, type Technology } from "./tech-stack";
 
-
 interface BannerData {
   name: string;
   title: string;
@@ -16,7 +15,7 @@ interface BannerData {
   github: string;
   stack: Technology[];
   image?: string;
-  motto?: string; // Added motto field
+  motto?: string;
 }
 
 export function BannerEditor() {
@@ -27,7 +26,7 @@ export function BannerEditor() {
     github: "",
     stack: [],
     image: undefined,
-    motto: "", // Initialize motto
+    motto: "",
   });
 
   const updateBannerData = (
@@ -85,79 +84,107 @@ export function BannerEditor() {
   };
 
   return (
-    <div className="grid md:grid-cols-2 gap-8">
+    <div className="flex flex-col gap-6 md:gap-8">
+      {/* Preview Section - Shows at top on mobile */}
+      <div className="order-1 md:order-2 w-full md:sticky md:top-4">
+        <div className="overflow-hidden rounded-lg shadow-md">
+          <BannerPreview data={bannerData} />
+        </div>
+      </div>
+
       {/* Form Section */}
-      <div className="space-y-6">
-        {[
-          {
-            label: "Name",
-            id: "name",
-            placeholder: "Your name",
-            value: bannerData.name,
-          },
-          {
-            label: "Title",
-            id: "title",
-            placeholder: "Your professional title",
-            value: bannerData.title,
-          },
-          {
-            label: "Twitter Username",
-            id: "twitter",
-            placeholder: "@username",
-            value: bannerData.twitter,
-          },
-          {
-            label: "GitHub Username",
-            id: "github",
-            placeholder: "username",
-            value: bannerData.github,
-          },
-         
-          {
-            label: "Favorite Motto/Quote",
-            id: "motto",
-            placeholder: "Enter your favorite motto or quote",
-            value: bannerData.motto || "",
-          },
-        ].map(({ label, id, placeholder, value }) => (
-          <div className="space-y-2" key={id}>
-            <Label htmlFor={id}>{label}</Label>
-            <Input
-              id={id}
-              placeholder={placeholder}
-              value={value}
-              onChange={(e) =>
-                updateBannerData(id as keyof BannerData, e.target.value)
-              }
-              className="text-gray-900 bg-white border-gray-300"
-            />
+      <div className="order-2 md:order-1 space-y-4 md:space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Left column */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                placeholder="Your name"
+                value={bannerData.name}
+                onChange={(e) => updateBannerData("name", e.target.value)}
+                className="text-gray-900 bg-white border-gray-300"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                placeholder="Your professional title"
+                value={bannerData.title}
+                onChange={(e) => updateBannerData("title", e.target.value)}
+                className="text-gray-900 bg-white border-gray-300"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="twitter">Twitter Username</Label>
+              <Input
+                id="twitter"
+                placeholder="@username"
+                value={bannerData.twitter}
+                onChange={(e) => updateBannerData("twitter", e.target.value)}
+                className="text-gray-900 bg-white border-gray-300"
+              />
+            </div>
           </div>
-        ))}
-        {/* Image Upload Input */}
-        <div className="space-y-2">
-          <Label htmlFor="image">Profile Image</Label>
-          <Input
-            id="image"
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="text-gray-900 bg-white border-gray-300"
+          
+          {/* Right column */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="github">GitHub Username</Label>
+              <Input
+                id="github"
+                placeholder="username"
+                value={bannerData.github}
+                onChange={(e) => updateBannerData("github", e.target.value)}
+                className="text-gray-900 bg-white border-gray-300"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="motto">Favorite Motto/Quote</Label>
+              <Input
+                id="motto"
+                placeholder="Enter your favorite motto or quote"
+                value={bannerData.motto || ""}
+                onChange={(e) => updateBannerData("motto", e.target.value)}
+                className="text-gray-900 bg-white border-gray-300"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="image">Profile Image</Label>
+              <Input
+                id="image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="text-gray-900 bg-white border-gray-300 text-sm"
+              />
+            </div>
+          </div>
+        </div>
+        
+        {/* Tech Stack - Full width */}
+        <div className="pt-2">
+          <TechStack
+            selected={bannerData.stack}
+            onChange={(stack) => updateBannerData("stack", stack)}
           />
         </div>
-        <TechStack
-          selected={bannerData.stack}
-          onChange={(stack) => updateBannerData("stack", stack)}
-        />
-        <Button className="w-full" size="lg" onClick={handleDownload}>
+        
+        {/* Download Button - Full width */}
+        <Button 
+          className="w-full mt-6" 
+          size="lg" 
+          onClick={handleDownload}
+        >
           <Download className="mr-2 h-4 w-4" />
           Download Banner
         </Button>
-      </div>
-
-      {/* Preview Section */}
-      <div className="relative">
-        <BannerPreview data={bannerData} />
       </div>
     </div>
   );
