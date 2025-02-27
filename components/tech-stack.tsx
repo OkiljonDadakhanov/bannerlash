@@ -151,7 +151,7 @@ export const technologies: Technology[] = [
   },
   {
     name: "Vue",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vue/vue-original.svg",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg",
     size: 32,
   },
   {
