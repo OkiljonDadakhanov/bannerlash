@@ -44,7 +44,7 @@ export function BannerPreview({ data }: BannerPreviewProps) {
       {/* Center Section: Display Motto */}
       <div className="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4 pointer-events-none">
         <p className="text-gray-400 text-base sm:text-lg md:text-lg italic">
-          {data.motto ? `"${data.motto}"` : "Your tagline here"}
+          {data.motto ? `"${data.motto}"` : "Your motto/quote here"}
         </p>
       </div>
 
